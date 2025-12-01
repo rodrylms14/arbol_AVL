@@ -43,7 +43,6 @@ public class AVL {
 
     private NodoAVL insertarRec(NodoAVL nodo, int llaveInsertar) {
 
-        // Inserción tipo BST normal
         if (nodo == null) {
             return new NodoAVL(llaveInsertar);
         }
@@ -53,38 +52,29 @@ public class AVL {
         } else if (llaveInsertar > nodo.getLlave()) {
             nodo.setHijoDerecho(insertarRec(nodo.getHijoDerecho(), llaveInsertar));
         } else {
-            // Llaves duplicadas: no insertamos nada
             return nodo;
         }
 
-        // Actualizar altura de este nodo
         nodo.actualizarAltura();
 
-        // Factor de balance
         int balance = nodo.balancear();
 
-        // Casos de desbalance
-        // Caso LL
         if (balance > 1 && llaveInsertar < nodo.getHijoIzquierdo().getLlave()) {
             return nodo.rotarDerecha(nodo);
         }
 
-        // Caso RR
         if (balance < -1 && llaveInsertar > nodo.getHijoDerecho().getLlave()) {
             return nodo.rotarIzquierda(nodo);
         }
 
-        // Caso LR
         if (balance > 1 && llaveInsertar > nodo.getHijoIzquierdo().getLlave()) {
             return nodo.rotarIzquierdaDerecha(nodo);
         }
 
-        // Caso RL
         if (balance < -1 && llaveInsertar < nodo.getHijoDerecho().getLlave()) {
             return nodo.rotarDerechaIzquierda(nodo);
         }
 
-        // Si está balanceado, se retorna el nodo sin cambios
         return nodo;
     }
     
@@ -138,52 +128,38 @@ public class AVL {
             return null;
         }
 
-        // Búsqueda del nodo a eliminar (BST normal)
         if (llaveEliminar < nodo.getLlave()) {
             nodo.setHijoIzquierdo(eliminarRec(nodo.getHijoIzquierdo(), llaveEliminar));
         } else if (llaveEliminar > nodo.getLlave()) {
             nodo.setHijoDerecho(eliminarRec(nodo.getHijoDerecho(), llaveEliminar));
         } else {
-            // Encontramos el nodo
 
-            // Caso 1: sin hijos
             if (nodo.getHijoIzquierdo() == null && nodo.getHijoDerecho() == null) {
                 return null;
             }
-            // Caso 2: un solo hijo
             else if (nodo.getHijoIzquierdo() == null) {
                 return nodo.getHijoDerecho();
             } else if (nodo.getHijoDerecho() == null) {
                 return nodo.getHijoIzquierdo();
             }
-            // Caso 3: dos hijos
             else {
-                // Buscamos el menor del subárbol derecho (sucesor)
                 NodoAVL sucesor = nodo.getHijoDerecho();
                 while (sucesor.getHijoIzquierdo() != null) {
                     sucesor = sucesor.getHijoIzquierdo();
                 }
-                // Copiamos la llave del sucesor
                 nodo.setLlave(sucesor.getLlave());
-                // Eliminamos el sucesor del subárbol derecho
                 nodo.setHijoDerecho(eliminarRec(nodo.getHijoDerecho(), sucesor.getLlave()));
             }
         }
 
-        // Si después de eliminar el nodo queda vacío este subárbol
         if (nodo == null) {
             return null;
         }
 
-        // Actualizar altura
         nodo.actualizarAltura();
 
-        // Balancear
         int balance = nodo.balancear();
 
-        // Revisamos casos de desbalance
-
-        // Caso LL
         if (balance > 1) {
             int balIzq = nodo.getHijoIzquierdo() != null ? nodo.getHijoIzquierdo().balancear() : 0;
             if (balIzq >= 0) {
@@ -193,7 +169,6 @@ public class AVL {
             }
         }
 
-        // Caso RR
         if (balance < -1) {
             int balDer = nodo.getHijoDerecho() != null ? nodo.getHijoDerecho().balancear() : 0;
             if (balDer <= 0) {
