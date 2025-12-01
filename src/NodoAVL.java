@@ -12,8 +12,7 @@ public class NodoAVL {
         this.llave = llave;
         this.hijoIzquierdo = null;
         this.hijoDerecho = null;
-        altura = 1; //Cualquier nodo es una hoja al momento de su inserción.
-                    // La altura de toda hoja es por defecto 1.
+        altura = 1; 
     }
 
     //Getters.
